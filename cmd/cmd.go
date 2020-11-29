@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/uniprobe/clickos-ctl/xenstore"
 )
 
 const (
@@ -23,6 +24,14 @@ var (
 		on the Xen Hypervisor. This version also allows for Unimon elements to
 		be used.`,
 		Version: "0.1a",
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			// Create XenStore Connection
+			// almost all actions will require this!
+			if err := xenstore.CreateClient(xsSocketPath); err != nil {
+				fmt.Printf("🆘 Xenstore Connection Failed!\n")
+				os.Exit(1)
+			}
+		},
 	}
 )
 
