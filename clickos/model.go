@@ -1,30 +1,16 @@
 package clickos
 
+import "github.com/uniprobe/clickos-ctl/unimon"
+
 const (
 	runningStateString string = "Running"
 	haltStateString    string = "Halted"
 	errorStateString   string = "Error"
 )
 
-type Domain struct {
-	ID      uint
-	Name    string
-	XSPath  string
-	Routers []Router
-}
-
+//Router represents a single ClickOS router
 type Router struct {
 	ID             uint
 	XSPath         string
-	UnimonElements []UnimonElement
-}
-
-type UnimonElement struct {
-	Name string
-	Data []UnimonData
-}
-
-type UnimonData struct {
-	timestamp uint64
-	data      interface{}
+	UnimonElements []unimon.UnimonElement
 }
