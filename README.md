@@ -1,39 +1,29 @@
 # ClickOS Control
 
-ClickOS is a port of the popular modular router Click, to the MiniOS operative
-system, that enables Click to run under the Xen hypervisor. ClickOS Control
-implements the necessary functionality to control a ClickOS instance.
+ClickOS is a port of the popular modular router Click, to the MiniOS operative system, that enables Click to run under the Xen hypervisor. ClickOS Control implements the necessary functionality to control a ClickOS instance.
+
+This fork also adds in the functionality required to use Unimon monitoring elements, this includes reading exported data from the xenstore or from packets.
 
 ## Basic functionality
 
 ClickOS Control supports the following operations:
 
-* Install and remove a router from a running ClickOS instance;
-* Start, stop and pause installed routers;
-* Read and write routers' element handlers.
+* Install and remove a router from a running ClickOS instance; (TODO)
+* Start, stop and pause installed routers; (TODO)
+* Read and write routers' element handlers; (TODO)
+* Read from unimon elements; (TODO)
+* Control unimon elements. (TODO)
 
 ## Controlling mechanisms
 
-There are multiple communications channels to access a ClickOS instance and
-configure it. Currently only xenstore is supported both on ClickOS and ClickOS
-Control, but others, like vchan, are planned.
-
-
-# Development
-
-ClickOS control is currently developed as a separated project, but it's planned
-to upstream it to the Click repository at a certain point.
-
-## Limitations
-
-The current version doesn't support element handlers.
-
+ClickOS Control interacts with ClickOS instances via the Xenstore for all control and configuration. Handler data also is passed via the Xenstore. Reading unimon data can be done via the Xenstore or though packets.
 
 # Build
 
-ClickOS Control is written in C++11. It can be built with any modern C++
-compiler. Tested with gcc and clang.
+This fork of ClickOS Control is written in GoLang. You can download binaries for x86_64 linux systems from the releases page or use the docker image (this has limitations).
 
-The only dependency is `libxenstore` from xen.
+To build, simply run:
 
-To build, simply run `make`.
+```bash
+CGO_ENABLED=1 go build
+```

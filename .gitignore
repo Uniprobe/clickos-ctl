@@ -1,7 +1,3 @@
 clickos
 
-*.d
-*.o
-
-*~
-*.swp
+go.sum
