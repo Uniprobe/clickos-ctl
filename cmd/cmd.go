@@ -14,7 +14,7 @@ const (
 var (
 	// Used for flags.
 	xsSocketPath string
-	userLicense  string
+	jsonOutput   bool
 
 	rootCmd = &cobra.Command{
 		Use:   "clickos",
@@ -28,6 +28,7 @@ var (
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&xsSocketPath, "xs-socket", "", xsSocketPathDefault, "Path to the XenStore UNIX Socket")
+	rootCmd.PersistentFlags().BoolVarP(&jsonOutput, "json", "j", false, "Output as JSON to stdout")
 
 	rootCmd.AddCommand(domainList)
 	rootCmd.AddCommand(routerList)
