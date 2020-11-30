@@ -8,13 +8,9 @@ import (
 	"github.com/uniprobe/clickos-ctl/xenstore"
 )
 
-const (
-	xsSocketPathDefault string = "/var/run/xenstored/socket"
-)
-
 var (
-	// Used for flags.
 	xsSocketPath string
+	debug        bool
 	jsonOutput   bool
 
 	rootCmd = &cobra.Command{
@@ -25,10 +21,18 @@ var (
 		be used.`,
 		Version: "0.1a",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			// Sudo required for XenStore
+			if os.Geteuid() != 0 {
+				fmt.Printf("🔐 You need to be root (sudo)\n")
+				os.Exit(1)
+			}
 			// Create XenStore Connection
 			// almost all actions will require this!
 			if err := xenstore.CreateClient(xsSocketPath); err != nil {
 				fmt.Printf("🆘 Xenstore Connection Failed!\n")
+				if debug {
+					panic(err)
+				}
 				os.Exit(1)
 			}
 		},
@@ -36,8 +40,9 @@ var (
 )
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&xsSocketPath, "xs-socket", "", xsSocketPathDefault, "Path to the XenStore UNIX Socket")
+	rootCmd.PersistentFlags().StringVarP(&xsSocketPath, "xs-socket", "", xenstore.XSSocketPathDefault, "Path to the XenStore UNIX Socket")
 	rootCmd.PersistentFlags().BoolVarP(&jsonOutput, "json", "j", false, "Output as JSON to stdout")
+	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "Show debugging output in stdout")
 
 	rootCmd.AddCommand(domainList)
 	rootCmd.AddCommand(routerList)

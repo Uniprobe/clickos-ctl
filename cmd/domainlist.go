@@ -19,7 +19,9 @@ var (
 			domains, err := xen.GetClickOSDomains()
 			if err != nil {
 				fmt.Printf("🆘 Failed to get domains list!\n")
-				fmt.Printf("🆘 Error: %v\n\n", err)
+				if debug {
+					fmt.Printf("🆘 Error: %v\n\n", err)
+				}
 				os.Exit(1)
 			}
 			if !jsonOutput {

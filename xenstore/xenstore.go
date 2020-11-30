@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	basePath string = "/local/domains/"
+	XSSocketPathDefault string = "/var/run/xenstored/socket"
+	basePath            string = "/local/domain"
 )
 
 var (
@@ -24,12 +25,19 @@ func GetPathChildren(path string) ([]string, error) {
 	if xenstoreClient == nil {
 		return nil, fmt.Errorf("Xenstore client not yet created")
 	}
-	return xenstoreClient.List(path)
+	return xenstoreClient.List(basePath + path)
 }
 
 func GetPathContent(path string) (string, error) {
 	if xenstoreClient == nil {
 		return "", fmt.Errorf("Xenstore client not yet created")
 	}
-	return xenstoreClient.Read(path)
+	return xenstoreClient.Read(basePath + path)
+}
+
+func GetDomainPath(domid int) (string, error) {
+	if xenstoreClient == nil {
+		return "", fmt.Errorf("Xenstore client not yet created")
+	}
+	return xenstoreClient.GetDomainPath(domid)
 }
